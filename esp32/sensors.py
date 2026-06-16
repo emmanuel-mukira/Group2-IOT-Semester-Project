@@ -1,0 +1,139 @@
+# =================================================
+# sensors.py
+# Sensor setup and reading functions
+# Handles either DHT11 or DHT22 depending on config.py
+# =================================================
+
+from machine import Pin, ADC
+import time
+import dht
+
+from config import (
+    DHT_PIN,
+    DHT_SENSOR_TYPE,
+    MOISTURE_PIN,
+    PH_PIN,
+    DHT_TEMP_OFFSET,
+    DHT_HUM_OFFSET,
+    ADC_MAX_VALUE,
+    ADC_REFERENCE_VOLTAGE
+)
+
+
+dht_sensor = None
+moisture_adc = None
+ph_adc = None
+
+
+def init_sensors():
+    """
+    Initializes the selected DHT sensor, soil moisture sensor, and pH sensor.
+
+    The selected DHT sensor is controlled in config.py:
+
+        DHT_SENSOR_TYPE = "DHT11"
+
+    or:
+
+        DHT_SENSOR_TYPE = "DHT22"
+
+    Even if both DHT11 and DHT22 are physically connected,
+    this code only reads one active DHT sensor at a time.
+    """
+
+    global dht_sensor, moisture_adc, ph_adc
+
+    if DHT_SENSOR_TYPE == "DHT11":
+        dht_sensor = dht.DHT11(Pin(DHT_PIN, Pin.IN, Pin.PULL_UP))
+        print("DHT11 initialized on GPIO", DHT_PIN)
+
+    elif DHT_SENSOR_TYPE == "DHT22":
+        dht_sensor = dht.DHT22(Pin(DHT_PIN, Pin.IN, Pin.PULL_UP))
+        print("DHT22 initialized on GPIO", DHT_PIN)
+
+    else:
+        raise ValueError("Invalid DHT_SENSOR_TYPE. Use 'DHT11' or 'DHT22'.")
+
+    moisture_adc = ADC(Pin(MOISTURE_PIN))
+    moisture_adc.atten(ADC.ATTN_11DB)
+    print("Soil moisture sensor initialized on GPIO", MOISTURE_PIN)
+
+    ph_adc = ADC(Pin(PH_PIN))
+    ph_adc.atten(ADC.ATTN_11DB)
+    print("PH-4502C sensor initialized on GPIO", PH_PIN)
+
+
+def read_dht():
+    """
+    Reads temperature and humidity from the selected DHT sensor.
+    """
+
+    try:
+        # DHT sensors need a delay between readings.
+        time.sleep(2)
+
+        dht_sensor.measure()
+
+        temp = dht_sensor.temperature()
+        hum = dht_sensor.humidity()
+
+        temp = temp + DHT_TEMP_OFFSET
+        hum = hum + DHT_HUM_OFFSET
+
+        return temp, hum
+
+    except Exception as e:
+        print("DHT read error:", e)
+        return None, None
+
+
+def read_adc_average(adc, samples=10):
+    """
+    Takes several ADC readings and returns the average.
+    This reduces noise from analog sensors.
+    """
+
+    total = 0
+
+    for i in range(samples):
+        total += adc.read()
+        time.sleep_ms(30)
+
+    return total // samples
+
+
+def read_moisture():
+    """
+    Reads the soil moisture sensor.
+
+    This percentage is a simple ADC conversion:
+        raw / 4095 * 100
+
+    It is not fully calibrated wet/dry soil percentage yet.
+    """
+
+    raw = read_adc_average(moisture_adc)
+
+    moisture_percent = (raw / ADC_MAX_VALUE) * 100
+
+    return raw, moisture_percent
+
+
+def read_ph():
+    """
+    Reads the PH-4502C pH sensor.
+
+    Formula copied from their original code:
+        pH = 7 + ((2.5 - voltage) / 0.18)
+
+    This is fine for initial testing, but accurate pH needs calibration
+    with known pH buffer solutions.
+    """
+
+    raw = read_adc_average(ph_adc)
+
+    voltage = (raw / ADC_MAX_VALUE) * ADC_REFERENCE_VOLTAGE
+
+    ph = 7 + ((2.5 - voltage) / 0.18)
+
+    return raw, voltage, ph
