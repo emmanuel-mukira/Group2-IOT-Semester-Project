@@ -1,0 +1,24 @@
+# Environment files
+.env
+.env.local
+
+# Node.js future backend/dashboard
+node_modules/
+dist/
+build/
+
+# Arduino / PlatformIO future files
+.pio/
+.vscode/.browse.c_cpp.db*
+.vscode/ipch/
+
+# Secrets
+config.h
+secrets.h
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
