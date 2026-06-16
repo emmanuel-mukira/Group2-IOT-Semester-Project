@@ -16,7 +16,11 @@ from config import (
     DHT_TEMP_OFFSET,
     DHT_HUM_OFFSET,
     ADC_MAX_VALUE,
-    ADC_REFERENCE_VOLTAGE
+    ADC_REFERENCE_VOLTAGE,
+    MOISTURE_DRY_RAW,
+    MOISTURE_WET_RAW,
+    PH_NEUTRAL_VOLTAGE,
+    PH_SLOPE
 )
 
 
@@ -95,37 +99,34 @@ def read_adc_average(adc, samples=10):
 
 
 def read_moisture():
-    """
-    Reads the soil moisture sensor.
-
-    This percentage is a simple ADC conversion:
-        raw / 4095 * 100
-
-    It is not fully calibrated wet/dry soil percentage yet.
-    """
-
     raw = read_adc_average(moisture_adc)
 
-    moisture_percent = (raw / ADC_MAX_VALUE) * 100
+    moisture_percent = (
+        (MOISTURE_DRY_RAW - raw) /
+        (MOISTURE_DRY_RAW - MOISTURE_WET_RAW)
+    ) * 100
+
+    if moisture_percent < 0:
+        moisture_percent = 0
+
+    if moisture_percent > 100:
+        moisture_percent = 100
 
     return raw, moisture_percent
 
 
 def read_ph():
-    """
-    Reads the PH-4502C pH sensor.
-
-    Formula copied from their original code:
-        pH = 7 + ((2.5 - voltage) / 0.18)
-
-    This is fine for initial testing, but accurate pH needs calibration
-    with known pH buffer solutions.
-    """
-
     raw = read_adc_average(ph_adc)
 
     voltage = (raw / ADC_MAX_VALUE) * ADC_REFERENCE_VOLTAGE
 
-    ph = 7 + ((2.5 - voltage) / 0.18)
+    ph = 7 + ((voltage - PH_NEUTRAL_VOLTAGE) * PH_SLOPE)
+
+    if ph < 0:
+        ph = 0
+
+    if ph > 14:
+        ph = 14
 
     return raw, voltage, ph
+

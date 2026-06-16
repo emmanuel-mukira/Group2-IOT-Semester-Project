@@ -38,7 +38,7 @@ Update the pin section in `esp32/config.py` to:
 OLED_SDA = 18
 OLED_SCL = 19
 
-DHT_PIN = 27
+DHT_PIN = 4
 
 MOISTURE_PIN = 32
 PH_PIN = 33

@@ -20,7 +20,8 @@ from oled_display import (
     init_oled,
     oled_message,
     display_sensor_data,
-    display_error
+    display_error,
+    oled_is_available
 )
 
 from sensors import (
@@ -60,7 +61,10 @@ if USE_WIFI or USE_MQTT or USE_FIREBASE:
 
 
 print("Starting IoT system...")
-print("OLED enabled")
+if oled_is_available():
+    print("OLED enabled")
+else:
+    print("OLED disabled - display was not detected")
 print("DHT22 on GPIO", DHT_PIN)
 print("Moisture on GPIO", MOISTURE_PIN)
 print("pH on GPIO", PH_PIN)
@@ -88,13 +92,13 @@ while True:
         ph_raw, ph_voltage, ph = read_ph()
 
         print("========== SENSOR READINGS ==========")
-        print("Air Temp      :", round(dht_temp, 2), "C")
-        print("Humidity      :", round(dht_hum, 2), "%")
+        print("Air Temp      :", dht_temp, "C")
+        print("Humidity      :", dht_hum, "%")
         print("Moisture Raw  :", moisture_raw)
-        print("Moisture      :", round(moisture_percent, 2), "%")
+        print("Moisture      :", moisture_percent, "%")
         print("pH Raw        :", ph_raw)
-        print("pH Voltage    :", round(ph_voltage, 3), "V")
-        print("pH Value      :", round(ph, 2))
+        print("pH Voltage    :", ph_voltage, "V")
+        print("pH Value      :", ph)
         print("Sensor Type   :", "DHT22")
         print("=====================================")
 
@@ -134,3 +138,4 @@ while True:
         display_error(e)
 
     time.sleep(3)
+

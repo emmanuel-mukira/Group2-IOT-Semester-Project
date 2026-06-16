@@ -21,10 +21,21 @@ def init_oled():
         freq=100000
     )
 
-    print("I2C scan:", i2c.scan())
+    devices = i2c.scan()
+    print("I2C scan:", devices)
 
-    oled = SH1106_I2C(128, 64, i2c, addr=0x3C)
-    oled_message("IoT System", "OLED Ready", "Starting...")
+    if 0x3C not in devices:
+        print("OLED not detected on SDA GPIO", OLED_SDA, "SCL GPIO", OLED_SCL)
+        print("Check OLED wiring, power, GND, and swapped SDA/SCL pins.")
+        oled = None
+        return None
+
+    try:
+        oled = SH1106_I2C(128, 64, i2c, addr=0x3C)
+        oled_message("IoT System", "OLED Ready", "Starting...")
+    except Exception as e:
+        print("OLED init failed:", e)
+        oled = None
 
     return oled
 
@@ -34,17 +45,24 @@ def oled_message(line1="", line2="", line3="", line4="", line5="", line6=""):
     Displays up to six short text lines on the OLED.
     """
 
+    global oled
+
     if oled is None:
         return
 
-    oled.fill(0)
-    oled.text(line1, 0, 0)
-    oled.text(line2, 0, 10)
-    oled.text(line3, 0, 20)
-    oled.text(line4, 0, 30)
-    oled.text(line5, 0, 40)
-    oled.text(line6, 0, 50)
-    oled.show()
+    try:
+        oled.fill(0)
+        oled.text(line1, 0, 0)
+        oled.text(line2, 0, 10)
+        oled.text(line3, 0, 20)
+        oled.text(line4, 0, 30)
+        oled.text(line5, 0, 40)
+        oled.text(line6, 0, 50)
+        oled.show()
+    except OSError as e:
+        print("OLED write failed:", e)
+        print("OLED disabled so the system can continue.")
+        oled = None
 
 
 def show_value(value, decimals=1):
@@ -70,19 +88,26 @@ def display_sensor_data(dht_temp, dht_hum, moisture_percent, ph, ph_voltage):
     - pH voltage
     """
 
+    global oled
+
     if oled is None:
         return
 
-    oled.fill(0)
+    try:
+        oled.fill(0)
 
-    oled.text("IoT Sensor Data", 0, 0)
-    oled.text("Air:" + show_value(dht_temp) + "C", 0, 10)
-    oled.text("Hum:" + show_value(dht_hum, 0) + "%", 0, 20)
-    oled.text("Moist:" + str(round(moisture_percent, 1)) + "%", 0, 30)
-    oled.text("pH:" + str(round(ph, 2)), 0, 40)
-    oled.text("pH V:" + str(round(ph_voltage, 2)), 0, 50)
+        oled.text("IoT Sensor Data", 0, 0)
+        oled.text("Air:" + show_value(dht_temp) + "C", 0, 10)
+        oled.text("Hum:" + show_value(dht_hum, 0) + "%", 0, 20)
+        oled.text("Moist:" + str(round(moisture_percent, 1)) + "%", 0, 30)
+        oled.text("pH:" + str(round(ph, 2)), 0, 40)
+        oled.text("pH V:" + str(round(ph_voltage, 2)), 0, 50)
 
-    oled.show()
+        oled.show()
+    except OSError as e:
+        print("OLED write failed:", e)
+        print("OLED disabled so the system can continue.")
+        oled = None
 
 
 def display_error(error):
@@ -91,3 +116,11 @@ def display_error(error):
     """
 
     oled_message("System Error", str(error)[:16], "Still running...")
+
+
+def oled_is_available():
+    """
+    Returns True when the OLED initialized successfully.
+    """
+
+    return oled is not None
