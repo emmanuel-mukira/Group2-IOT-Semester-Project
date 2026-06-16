@@ -43,16 +43,8 @@ def init_sensors():
 
     global dht_sensor, moisture_adc, ph_adc
 
-    if DHT_SENSOR_TYPE == "DHT11":
-        dht_sensor = dht.DHT11(Pin(DHT_PIN, Pin.IN, Pin.PULL_UP))
-        print("DHT11 initialized on GPIO", DHT_PIN)
-
-    elif DHT_SENSOR_TYPE == "DHT22":
-        dht_sensor = dht.DHT22(Pin(DHT_PIN, Pin.IN, Pin.PULL_UP))
-        print("DHT22 initialized on GPIO", DHT_PIN)
-
-    else:
-        raise ValueError("Invalid DHT_SENSOR_TYPE. Use 'DHT11' or 'DHT22'.")
+    dht_sensor = dht.DHT22(Pin(DHT_PIN, Pin.IN, Pin.PULL_UP))
+    print("DHT22 initialized on GPIO", DHT_PIN)
 
     moisture_adc = ADC(Pin(MOISTURE_PIN))
     moisture_adc.atten(ADC.ATTN_11DB)

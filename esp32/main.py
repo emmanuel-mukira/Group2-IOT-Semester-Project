@@ -11,7 +11,6 @@ from config import (
     USE_WIFI,
     USE_MQTT,
     USE_FIREBASE,
-    DHT_SENSOR_TYPE,
     DHT_PIN,
     MOISTURE_PIN,
     PH_PIN
@@ -62,14 +61,14 @@ if USE_WIFI or USE_MQTT or USE_FIREBASE:
 
 print("Starting IoT system...")
 print("OLED enabled")
-print(DHT_SENSOR_TYPE, "on GPIO", DHT_PIN)
+print("DHT22 on GPIO", DHT_PIN)
 print("Moisture on GPIO", MOISTURE_PIN)
 print("pH on GPIO", PH_PIN)
 print("--------------------------------------")
 
 oled_message(
     "System Ready",
-    DHT_SENSOR_TYPE + " GPIO" + str(DHT_PIN),
+    "DHT22 GPIO" + str(DHT_PIN),
     "Moisture + pH"
 )
 
@@ -88,16 +87,16 @@ while True:
 
         ph_raw, ph_voltage, ph = read_ph()
 
-        print(DHT_SENSOR_TYPE, "Temp:", dht_temp)
-        print(DHT_SENSOR_TYPE, "Hum:", dht_hum)
-
-        print("Moisture Raw:", moisture_raw)
-        print("Moisture %:", round(moisture_percent, 2))
-
-        print("pH Raw:", ph_raw)
-        print("pH Voltage:", round(ph_voltage, 3), "V")
-        print("pH:", round(ph, 2))
-        print("--------------------------------------")
+        print("========== SENSOR READINGS ==========")
+        print("Air Temp      :", round(dht_temp, 2), "C")
+        print("Humidity      :", round(dht_hum, 2), "%")
+        print("Moisture Raw  :", moisture_raw)
+        print("Moisture      :", round(moisture_percent, 2), "%")
+        print("pH Raw        :", ph_raw)
+        print("pH Voltage    :", round(ph_voltage, 3), "V")
+        print("pH Value      :", round(ph, 2))
+        print("Sensor Type   :", "DHT22")
+        print("=====================================")
 
         display_sensor_data(
             dht_temp,
@@ -109,7 +108,7 @@ while True:
 
         payload = {
             "device": "ESP32-IOT-SYSTEM",
-            "dht_sensor_type": DHT_SENSOR_TYPE,
+            "dht_sensor_type": "DHT22",
             "temperature": dht_temp,
             "humidity": dht_hum,
             "moisture_raw": moisture_raw,

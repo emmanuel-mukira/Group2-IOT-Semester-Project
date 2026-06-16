@@ -61,16 +61,15 @@ FIREBASE_URL = "https://iot-vermiq-default-rtdb.firebaseio.com/latest_readings.j
 # Keep the same structure as their code for now.
 # We will remap later.
 
-OLED_SDA = 21
-OLED_SCL = 22
+OLED_SDA = 18
+OLED_SCL = 19
 
 # One active DHT sensor pin.
-# Even if DHT11 and DHT22 are both on the board,
-# the code will only read the sensor type selected below.
-DHT_PIN = 4
+# For DHT22
+DHT_PIN = 27
 
-MOISTURE_PIN = 34
-PH_PIN = 35
+MOISTURE_PIN = 32
+PH_PIN = 33
 
 
 # =================================================
@@ -80,7 +79,7 @@ PH_PIN = 35
 # CHANGE THIS depending on which sensor you want the code to read:
 # "DHT11" for DHT11
 # "DHT22" for DHT22
-DHT_SENSOR_TYPE = "DHT11"
+DHT_SENSOR_TYPE = "DHT22"
 
 
 # =================================================
