@@ -144,9 +144,9 @@ The dashboard is designed so the local fetch can later be replaced with a Firest
 The project-level Firebase URLs are kept in `.env` for Python/MicroPython configuration:
 
 ```env
-FIREBASE_REALTIME_DB_URL="https://iot-project-group-2-72c7b-default-rtdb.europe-west1.firebasedatabase.app/.json"
-FIRESTORE_BASE_URL="https://firestore.googleapis.com/v1/projects/iot-project-group-2-72c7b/databases/(default)/documents"
-FIRESTORE_READINGS_URL="https://firestore.googleapis.com/v1/projects/iot-project-group-2-72c7b/databases/(default)/documents/readings?orderBy=__name__&pageSize=100"
+FIREBASE_REALTIME_DB_URL=
+FIRESTORE_BASE_URL=
+FIRESTORE_READINGS_URL=
 ```
 
 Plain browser JavaScript cannot import `.env` directly without a backend or build tool, so the static dashboard uses `dashboard/config.js` for its public Firestore URL.
