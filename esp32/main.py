@@ -1,10 +1,3 @@
-# =================================================
-# main.py
-# Main program controller
-# Current stage:
-# Local OLED + sensor testing
-# =================================================
-
 import time
 
 from config import (
@@ -36,10 +29,6 @@ from mqtt_manager import connect_mqtt, publish_mqtt
 from firebase_client import publish_firebase
 
 
-# =================================================
-# INITIAL SETUP
-# =================================================
-
 client = None
 
 init_oled()
@@ -48,7 +37,6 @@ init_sensors()
 
 wifi_connected = False
 
-# WiFi starts for standalone WiFi tests or when cloud features are enabled.
 if USE_WIFI or USE_MQTT or USE_FIREBASE:
     wifi_connected = connect_wifi()
 
@@ -78,10 +66,6 @@ oled_message(
 
 time.sleep(2)
 
-
-# =================================================
-# MAIN LOOP
-# =================================================
 
 while True:
     try:
@@ -123,13 +107,9 @@ while True:
             "uptime": time.ticks_ms() // 1000
         }
 
-        # MQTT is OFF for now.
-        # Later turn on by setting USE_MQTT = True in config.py.
         if USE_MQTT and client is not None:
             publish_mqtt(client, payload)
 
-        # Firebase is OFF for now.
-        # Later turn on by setting USE_FIREBASE = True in config.py.
         if USE_FIREBASE and wifi_connected:
             publish_firebase(payload)
 

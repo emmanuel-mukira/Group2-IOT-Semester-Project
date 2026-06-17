@@ -1,0 +1,371 @@
+Readings : 
+MPY: soft reboot
+I2C scan: [60]
+DHT22 initialized on GPIO 4
+Soil moisture sensor initialized on GPIO 32
+PH-4502C sensor initialized on GPIO 33
+Connecting to WiFi...
+WiFi status: 1000
+WiFi status: 1000
+
+WiFi connected
+IP: 192.168.137.220
+MQTT connected
+Starting IoT system...
+OLED enabled
+DHT22 on GPIO 4
+Moisture on GPIO 32
+pH on GPIO 33
+--------------------------------------
+========== SENSOR READINGS ==========
+Air Temp      : 23.1 C
+Humidity      : 61.600004 %
+Moisture Raw  : 0
+Moisture      : 100 %
+pH Raw        : 52
+pH Voltage    : 0.041904764 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.7 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 49
+pH Voltage    : 0.03948718 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.7 %
+Moisture Raw  : 63
+Moisture      : 61.666668 %
+pH Raw        : 51
+pH Voltage    : 0.0410989 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.600004 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 52
+pH Voltage    : 0.041904764 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.5 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 51
+pH Voltage    : 0.0410989 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.5 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 53
+pH Voltage    : 0.04271062 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.5 %
+Moisture Raw  : 62
+Moisture      : 63.333332 %
+pH Raw        : 50
+pH Voltage    : 0.04029304 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.600004 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 50
+pH Voltage    : 0.04029304 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.4 %
+Moisture Raw  : 65
+Moisture      : 58.333332 %
+pH Raw        : 52
+pH Voltage    : 0.041904764 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.4 %
+Moisture Raw  : 59
+Moisture      : 68.333336 %
+pH Raw        : 44
+pH Voltage    : 0.035457876 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.4 %
+Moisture Raw  : 63
+Moisture      : 61.666668 %
+pH Raw        : 48
+pH Voltage    : 0.038681316 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.8 %
+Moisture Raw  : 65
+Moisture      : 58.333332 %
+pH Raw        : 54
+pH Voltage    : 0.043516484 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.600004 %
+Moisture Raw  : 63
+Moisture      : 61.666668 %
+pH Raw        : 47
+pH Voltage    : 0.03787546 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.9 %
+Moisture Raw  : 71
+Moisture      : 48.333332 %
+pH Raw        : 56
+pH Voltage    : 0.045128204 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.5 %
+Moisture Raw  : 62
+Moisture      : 63.333332 %
+pH Raw        : 44
+pH Voltage    : 0.035457876 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.2 %
+Moisture Raw  : 62
+Moisture      : 63.333332 %
+pH Raw        : 48
+pH Voltage    : 0.038681316 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.4 %
+Moisture Raw  : 69
+Moisture      : 51.666664 %
+pH Raw        : 57
+pH Voltage    : 0.045934068 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.3 %
+Moisture Raw  : 65
+Moisture      : 58.333332 %
+pH Raw        : 51
+pH Voltage    : 0.0410989 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.4 %
+Moisture Raw  : 68
+Moisture      : 53.333336 %
+pH Raw        : 56
+pH Voltage    : 0.045128204 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.600004 %
+Moisture Raw  : 61
+Moisture      : 65.0 %
+pH Raw        : 44
+pH Voltage    : 0.035457876 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 62.0 %
+Moisture Raw  : 46
+Moisture      : 90.0 %
+pH Raw        : 49
+pH Voltage    : 0.03948718 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.4 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 48
+pH Voltage    : 0.038681316 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.3 %
+Moisture Raw  : 72
+Moisture      : 46.666668 %
+pH Raw        : 58
+pH Voltage    : 0.046739924 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 62.0 %
+Moisture Raw  : 46
+Moisture      : 90.0 %
+pH Raw        : 49
+pH Voltage    : 0.03948718 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.800002 C
+Humidity      : 61.4 %
+Moisture Raw  : 64
+Moisture      : 60.000004 %
+pH Raw        : 48
+pH Voltage    : 0.038681316 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.3 %
+Moisture Raw  : 72
+Moisture      : 46.666668 %
+pH Raw        : 58
+pH Voltage    : 0.046739924 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.7 %
+Moisture Raw  : 66
+Moisture      : 56.666668 %
+pH Raw        : 52
+pH Voltage    : 0.041904764 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.4 %
+Moisture Raw  : 70
+Moisture      : 50.0 %
+pH Raw        : 57
+pH Voltage    : 0.045934068 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+========== SENSOR READINGS ==========
+Air Temp      : 22.9 C
+Humidity      : 61.4 %
+Moisture Raw  : 63
+Moisture      : 61.666668 %
+pH Raw        : 50
+pH Voltage    : 0.04029304 V
+pH Value      : 14
+Sensor Type   : DHT22
+=====================================
+MQTT published
+Firebase published: 200
+
+

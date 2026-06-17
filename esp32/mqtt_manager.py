@@ -1,8 +1,3 @@
-# =================================================
-# mqtt_manager.py
-# MQTT connection and publishing logic
-# =================================================
-
 import time
 import ujson
 
@@ -24,19 +19,7 @@ except:
 
 def connect_mqtt():
     """
-    Connects ESP32 to MQTT broker.
-
-    CHANGE:
-    In config.py, update:
-        MQTT_BROKER
-        MQTT_PORT
-        MQTT_TOPIC
-
-    Their broker is local:
-        192.168.137.89
-
-    Your earlier working setup used HiveMQ:
-        broker.hivemq.com
+    Connects ESP32 to the configured MQTT broker.
     """
 
     if MQTTClient is None:

@@ -1,9 +1,3 @@
-# =================================================
-# sensors.py
-# Sensor setup and reading functions
-# Handles either DHT11 or DHT22 depending on config.py
-# =================================================
-
 from machine import Pin, ADC
 import time
 import dht
@@ -31,18 +25,7 @@ ph_adc = None
 
 def init_sensors():
     """
-    Initializes the selected DHT sensor, soil moisture sensor, and pH sensor.
-
-    The selected DHT sensor is controlled in config.py:
-
-        DHT_SENSOR_TYPE = "DHT11"
-
-    or:
-
-        DHT_SENSOR_TYPE = "DHT22"
-
-    Even if both DHT11 and DHT22 are physically connected,
-    this code only reads one active DHT sensor at a time.
+    Initializes the DHT22, soil moisture sensor, and pH sensor.
     """
 
     global dht_sensor, moisture_adc, ph_adc

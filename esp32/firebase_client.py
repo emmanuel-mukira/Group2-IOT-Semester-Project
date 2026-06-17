@@ -1,8 +1,3 @@
-# =================================================
-# firebase_client.py
-# Firebase Realtime Database upload logic
-# =================================================
-
 import ujson
 
 try:
@@ -17,10 +12,6 @@ def publish_firebase(payload):
     """
     Uploads payload to Firebase Realtime Database.
 
-    CHANGE:
-    Update FIREBASE_URL in config.py.
-
-    IMPORTANT:
     Firebase Realtime Database REST URLs must end with .json
 
     Example:
@@ -42,7 +33,6 @@ def publish_firebase(payload):
 
         print("Firebase published:", response.status_code)
 
-        # Critical on ESP32 to avoid memory issues.
         response.close()
 
         return True
