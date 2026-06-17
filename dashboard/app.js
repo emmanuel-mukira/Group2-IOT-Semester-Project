@@ -1,6 +1,11 @@
-const DATA_URL = "../data/firebase-readings.json";
+const CONFIG = window.DASHBOARD_CONFIG || {};
+const DATA_SOURCE = CONFIG.DATA_SOURCE || "local";
+const LOCAL_READINGS_URL = CONFIG.LOCAL_READINGS_URL || "../data/firebase-readings.json";
+const FIRESTORE_READINGS_URL = CONFIG.FIRESTORE_READINGS_URL || "";
 const REFRESH_MS = 5000;
+const FINAL_READING_NUMBER = 29;
 let visibleReadingCount = 0;
+let refreshTimer;
 
 const fields = {
   syncStatus: document.querySelector("#syncStatus"),
@@ -31,6 +36,7 @@ const fields = {
   sensorType: document.querySelector("#sensorType"),
   mqttStatus: document.querySelector("#mqttStatus"),
   firebaseStatus: document.querySelector("#firebaseStatus"),
+  latestTimestamp: document.querySelector("#latestTimestamp"),
   tableUpdated: document.querySelector("#tableUpdated"),
   readingsTable: document.querySelector("#readingsTable"),
 };
@@ -64,16 +70,100 @@ function readingNumber(reading) {
   return match ? Number(match[1]) : 0;
 }
 
+function readingTime(reading) {
+  const value = reading.timestamp || reading.createTime || reading.updateTime;
+  const time = value ? new Date(value).getTime() : NaN;
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function sortReadings(first, second) {
+  const firstTime = readingTime(first);
+  const secondTime = readingTime(second);
+
+  if (firstTime && secondTime && firstTime !== secondTime) {
+    return firstTime - secondTime;
+  }
+
+  return readingNumber(first) - readingNumber(second);
+}
+
+function formatTimestamp(value) {
+  if (!value) return "--";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "--";
+
+  return date.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
 function normalizeReadings(data) {
-  const source = Array.isArray(data.readings) ? data.readings : data.readings && typeof data.readings === "object" ? Object.values(data.readings) : [];
+  if (Array.isArray(data.documents)) {
+    return data.documents
+      .map(normalizeFirestoreDocument)
+      .filter(Boolean)
+      .sort(sortReadings);
+  }
+
+  const source = Array.isArray(data.readings)
+    ? data.readings
+    : data.readings && typeof data.readings === "object"
+      ? Object.values(data.readings)
+      : [];
+
   return source
     .filter(Boolean)
-    .sort((first, second) => readingNumber(first) - readingNumber(second));
+    .sort(sortReadings);
+}
+
+function unwrapFirestoreValue(value) {
+  if (!value || typeof value !== "object") return value;
+  if ("stringValue" in value) return value.stringValue;
+  if ("integerValue" in value) return Number(value.integerValue);
+  if ("doubleValue" in value) return Number(value.doubleValue);
+  if ("booleanValue" in value) return Boolean(value.booleanValue);
+  if ("timestampValue" in value) return value.timestampValue;
+  if ("nullValue" in value) return null;
+  return value;
+}
+
+function normalizeFirestoreDocument(document) {
+  const fields = document.fields || {};
+  const reading = {};
+
+  Object.keys(fields).forEach((key) => {
+    reading[key] = unwrapFirestoreValue(fields[key]);
+  });
+
+  if (!reading.id && document.name) {
+    reading.id = document.name.split("/").pop();
+  }
+
+  reading.createTime = document.createTime;
+  reading.updateTime = document.updateTime;
+
+  return reading;
 }
 
 function readingsForCurrentTick(readings) {
   visibleReadingCount = visibleReadingCount >= readings.length ? readings.length : visibleReadingCount + 1;
   return readings.slice(0, visibleReadingCount);
+}
+
+function hasReachedFinalReading(readings) {
+  const latest = readings.at(-1);
+  return latest ? readingNumber(latest) >= FINAL_READING_NUMBER : false;
+}
+
+function stopFetchingReadings() {
+  if (!refreshTimer) return;
+  clearInterval(refreshTimer);
+  refreshTimer = null;
 }
 
 function buildPath(values, width, height, min, max) {
@@ -197,6 +287,7 @@ function renderDashboard(readings) {
   fields.sensorType.textContent = latest.dht_sensor_type || "--";
   fields.mqttStatus.textContent = latest.mqtt_status || "--";
   fields.firebaseStatus.textContent = latest.firebase_status || "--";
+  fields.latestTimestamp.textContent = formatTimestamp(latest.timestamp);
   fields.tableUpdated.textContent = `Showing newest ${Math.min(readings.length, 8)} of ${readings.length}`;
 
   fields.readingsTable.innerHTML = readings
@@ -206,6 +297,7 @@ function renderDashboard(readings) {
       (reading) => `
         <tr>
           <td>${reading.id}</td>
+          <td class="timestamp-cell">${formatTimestamp(reading.timestamp)}</td>
           <td>${formatNumber(reading.ambient_temp_c)} C</td>
           <td>${formatNumber(reading.humidity_percent)}%</td>
           <td>${formatNumber(reading.moisture_percent)}%</td>
@@ -221,7 +313,11 @@ function renderDashboard(readings) {
 
 async function fetchReadings() {
   try {
-    const response = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+    const dataUrl = DATA_SOURCE === "firestore" ? FIRESTORE_READINGS_URL : LOCAL_READINGS_URL;
+    if (!dataUrl) throw new Error("No dashboard data URL configured");
+
+    const separator = dataUrl.includes("?") ? "&" : "?";
+    const response = await fetch(`${dataUrl}${separator}t=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     const readings = normalizeReadings(data);
@@ -236,6 +332,12 @@ async function fetchReadings() {
       second: "2-digit",
     })} - reading ${visibleReadings.length} of ${readings.length}`;
     document.querySelector(".sync-panel").classList.remove("error");
+
+    if (hasReachedFinalReading(visibleReadings)) {
+      stopFetchingReadings();
+      fields.syncStatus.textContent = "Reading sequence complete";
+      fields.lastUpdated.textContent = `Stopped at reading ${FINAL_READING_NUMBER}`;
+    }
   } catch (error) {
     fields.syncStatus.textContent = "Data source unavailable";
     fields.lastUpdated.textContent = "Run from a local web server so fetch can read JSON";
@@ -245,4 +347,4 @@ async function fetchReadings() {
 }
 
 fetchReadings();
-setInterval(fetchReadings, REFRESH_MS);
+refreshTimer = setInterval(fetchReadings, REFRESH_MS);

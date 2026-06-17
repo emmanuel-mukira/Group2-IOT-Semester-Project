@@ -373,7 +373,7 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px;
+  min-width: 860px;
 }
 
 th,
@@ -392,6 +392,12 @@ th {
 
 td {
   font-weight: 700;
+}
+
+.timestamp-cell {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .status-pill {

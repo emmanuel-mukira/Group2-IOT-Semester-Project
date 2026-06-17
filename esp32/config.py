@@ -2,6 +2,35 @@ from machine import unique_id
 from ubinascii import hexlify
 
 
+def _load_env(path=".env"):
+    values = {}
+
+    try:
+        env_file = open(path)
+    except OSError:
+        return values
+
+    try:
+        for line in env_file:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+
+            if key:
+                values[key] = value
+    finally:
+        env_file.close()
+
+    return values
+
+
+ENV = _load_env()
+
+
 USE_WIFI = True
 USE_MQTT = True
 USE_FIREBASE = True
@@ -21,7 +50,18 @@ MQTT_CLIENT_ID = b"esp32-iot-system-" + hexlify(unique_id())
 
 # FIREBASE SETTINGS
 # Firebase Realtime Database URL must end with .json
-FIREBASE_URL = "https://iot-project-group-2-72c7b-default-rtdb.europe-west1.firebasedatabase.app/.json"
+FIREBASE_URL = ENV.get(
+    "FIREBASE_REALTIME_DB_URL",
+    "https://iot-project-group-2-72c7b-default-rtdb.europe-west1.firebasedatabase.app/.json",
+)
+FIRESTORE_BASE_URL = ENV.get(
+    "FIRESTORE_BASE_URL",
+    "https://firestore.googleapis.com/v1/projects/iot-project-group-2-72c7b/databases/(default)/documents",
+)
+FIRESTORE_READINGS_URL = ENV.get(
+    "FIRESTORE_READINGS_URL",
+    FIRESTORE_BASE_URL + "/readings?orderBy=__name__&pageSize=100",
+)
 
 
 # PIN SETTINGS
