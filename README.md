@@ -117,6 +117,30 @@ We collected 29 cleaned sensor readings. Each JSON reading included the bed ID, 
 
 The JSON file was prepared so it could be uploaded directly to Firebase Realtime Database and later fetched by the dashboard.
 
+## Dashboard
+
+The dashboard is a single static page in `dashboard/`. It currently fetches the local `data/firebase-readings.json` file every 5 seconds and plays the readings from `reading_001` through `reading_029` so the page feels like live incoming sensor data during demos.
+
+Start the local Python server from the project root:
+
+```powershell
+python -m http.server 8080 --bind 127.0.0.1
+```
+
+Then open:
+
+```txt
+http://127.0.0.1:8080/dashboard/
+```
+
+If port `8080` is already in use, choose another port:
+
+```powershell
+python -m http.server 8081 --bind 127.0.0.1
+```
+
+The dashboard is designed so the local fetch can later be replaced with a Firestore fetch that runs every 5 seconds. For Firestore integration, we will add the Firebase web SDK, configure the Firebase app, read from a `readings` collection ordered by timestamp or reading number, and pass those documents into the same dashboard rendering function.
+
 ## Calibration Values
 
 The analog conversion and offsets used by the firmware were stored in `esp32/config.py`.

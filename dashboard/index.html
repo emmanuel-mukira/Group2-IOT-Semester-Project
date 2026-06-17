@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vermiculture Bed Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="dashboard-shell">
+      <section class="topbar" aria-label="Dashboard summary">
+        <div>
+          <p class="eyebrow">Group 2 IoT Vermiculture Monitoring</p>
+          <h1>Vermiculture Bed Dashboard</h1>
+          <p class="lede">Live bed conditions and sensor analytics from Firebase-ready readings.</p>
+        </div>
+        <div class="sync-panel">
+          <span class="pulse" aria-hidden="true"></span>
+          <div>
+            <strong id="syncStatus">Connecting</strong>
+            <span id="lastUpdated">Waiting for first fetch</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="health-band" aria-label="Current bed health">
+        <div class="health-copy">
+          <span id="bedId">BED_001</span>
+          <h2 id="healthTitle">Reading bed health...</h2>
+          <p id="healthText">The dashboard refreshes every 5 seconds from the local JSON data source.</p>
+        </div>
+        <div class="health-score">
+          <span id="healthScore">--</span>
+          <small>Bed score</small>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Current readings">
+        <article class="metric-card temperature">
+          <div class="metric-header">
+            <span>Temperature</span>
+            <small id="temperatureTrend">--</small>
+          </div>
+          <strong id="temperatureValue">--</strong>
+          <div class="meter"><span id="temperatureMeter"></span></div>
+        </article>
+
+        <article class="metric-card humidity">
+          <div class="metric-header">
+            <span>Humidity</span>
+            <small id="humidityTrend">--</small>
+          </div>
+          <strong id="humidityValue">--</strong>
+          <div class="meter"><span id="humidityMeter"></span></div>
+        </article>
+
+        <article class="metric-card moisture">
+          <div class="metric-header">
+            <span>Moisture</span>
+            <small id="moistureTrend">--</small>
+          </div>
+          <strong id="moistureValue">--</strong>
+          <div class="meter"><span id="moistureMeter"></span></div>
+        </article>
+
+        <article class="metric-card ph">
+          <div class="metric-header">
+            <span>pH Level</span>
+            <small id="phTrend">--</small>
+          </div>
+          <strong id="phValue">--</strong>
+          <div class="meter"><span id="phMeter"></span></div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel chart-panel">
+          <div class="panel-title">
+            <div>
+              <span>Reading Trends</span>
+              <h2>Last sensor samples</h2>
+            </div>
+            <small id="sampleCount">0 readings</small>
+          </div>
+          <div id="trendChart" class="chart" role="img" aria-label="Line chart of temperature, humidity, moisture, and pH readings"></div>
+          <div class="legend" aria-label="Chart legend">
+            <span><i class="swatch temp"></i>Temp</span>
+            <span><i class="swatch hum"></i>Humidity</span>
+            <span><i class="swatch moist"></i>Moisture</span>
+            <span><i class="swatch ph"></i>pH</span>
+          </div>
+        </article>
+
+        <article class="panel analytics-panel">
+          <div class="panel-title">
+            <div>
+              <span>Analytics</span>
+              <h2>Bed condition snapshot</h2>
+            </div>
+          </div>
+          <div class="analytics-list">
+            <div>
+              <span>Average moisture</span>
+              <strong id="avgMoisture">--</strong>
+            </div>
+            <div>
+              <span>Temperature range</span>
+              <strong id="temperatureRange">--</strong>
+            </div>
+            <div>
+              <span>Humidity range</span>
+              <strong id="humidityRange">--</strong>
+            </div>
+            <div>
+              <span>Lowest moisture</span>
+              <strong id="lowestMoisture">--</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel score-panel">
+          <div class="panel-title">
+            <div>
+              <span>Bed Score</span>
+              <h2>How the score works</h2>
+            </div>
+          </div>
+          <p class="score-note">
+            The score starts at 100 and loses points when the latest reading moves away from the target bed conditions.
+          </p>
+          <div class="score-formula" aria-label="Bed score formula">
+            <div class="formula-row">
+              <span>Moisture target</span>
+              <strong>65%</strong>
+            </div>
+            <div class="formula-row">
+              <span>Temperature target</span>
+              <strong>23 C</strong>
+            </div>
+            <div class="formula-row">
+              <span>Humidity target</span>
+              <strong>62%</strong>
+            </div>
+            <div class="formula-row">
+              <span>pH target</span>
+              <strong>Near 7</strong>
+            </div>
+          </div>
+          <p class="score-note compact">
+            78-100 stable, 55-77 needs light attention, below 55 needs intervention.
+          </p>
+        </article>
+
+        <article class="panel status-panel">
+          <div class="panel-title">
+            <div>
+              <span>System</span>
+              <h2>Data pipeline</h2>
+            </div>
+          </div>
+          <div class="pipeline">
+            <div>
+              <span>Device</span>
+              <strong id="deviceName">--</strong>
+            </div>
+            <div>
+              <span>DHT sensor</span>
+              <strong id="sensorType">--</strong>
+            </div>
+            <div>
+              <span>MQTT</span>
+              <strong id="mqttStatus">--</strong>
+            </div>
+            <div>
+              <span>Firebase</span>
+              <strong id="firebaseStatus">--</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel table-panel">
+          <div class="panel-title">
+            <div>
+              <span>Recent Data</span>
+              <h2>Latest readings</h2>
+            </div>
+            <small id="tableUpdated">Refreshes every 5s</small>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Temp</th>
+                  <th>Humidity</th>
+                  <th>Moisture</th>
+                  <th>pH</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="readingsTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
